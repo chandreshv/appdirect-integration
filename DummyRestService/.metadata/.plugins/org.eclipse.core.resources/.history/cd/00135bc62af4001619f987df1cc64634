@@ -1,0 +1,32 @@
+package com.dummy.service;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+/**
+ * Root resource (exposed at 'myresource' path)
+ */
+@Path("dummyResponse")
+public class MyResource {
+
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as 'text/plain' media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getIt() {
+        return "{'type': 'SUBSCRIPTION_ORDER','marketplace': { 'baseUrl': 'https://www.acme.com',      'partner': 'APPDIRECT'    },    "
+        		+ "'creator': {      'address': {        'firstName': 'Test',        'fullName': 'Test User',        'lastName': 'User'      },      "
+        		+ "'email': 'testuser@testco.com',      'firstName': 'Test',      'language': 'en',      'lastName': ' User',      'locale': 'en-US',      "
+        		+ "'openId': 'https://www.acme.com/openid/id/47cb8f55-1af6-5bfc-9a7d-8061d3aa0c97',      'uuid': '47cb8f55-1af6-5bfc-9a7d-8061d3aa0c97'    }, "
+        		+ "   'payload': {      'company': {        'country': 'US',        'name': 'tester',        'phoneNumber': '1-800-333-3333',       "
+        		+ " 'uuid': '385beb51-51ae-4ffe-8c05-3f35a9f99825',        'website': 'www.testco.com'      },    "
+        		+ "  'order': {        'editionCode': 'Standard',        'pricingDuration': 'MONTHLY',       "
+        		+ " 'items': [{          'quantity': '4',          'unit': 'USER'        }]      }    }}"; 
+        }
+    }

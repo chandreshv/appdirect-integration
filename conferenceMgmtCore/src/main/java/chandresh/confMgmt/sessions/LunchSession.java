@@ -20,7 +20,7 @@ public class LunchSession extends Session{
 	public List<String> print() {
 		List<String> result = new ArrayList<String>();
 		 
-		result.add(this.MORNING_SESSION_START_TIME+" "+ this.SESSION_NAME+" "+String.valueOf(this.getAvailableTimeInMinutes(MORNING_SESSION_START_TIME, MORNING_SESSION_END_TIME)));
+		result.add(MORNING_SESSION_START_TIME+" "+ SESSION_NAME+" "+String.valueOf(this.getAvailableTimeInMinutes(MORNING_SESSION_START_TIME, MORNING_SESSION_END_TIME)));
 		return result;
 	}
 

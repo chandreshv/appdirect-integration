@@ -2,7 +2,6 @@ package chandresh.confMgmt.sessions;
 
 import java.util.List;
 
-import chandresh.confMgmt.talk.GeneralTalk;
 import chandresh.confMgmt.talk.Talk;
 
 public class MorningSession extends Session{
@@ -29,13 +28,13 @@ public class MorningSession extends Session{
 	}
 
 
-	private Talk addLunchDetails() {
+/*	private Talk addLunchDetails() {
 		Talk lunch = new GeneralTalk();
 		lunch.setName(LUNCH_SESSION_NAME);
 		lunch.setDuration(LUNCH_DURATION);
 		lunch.setStartTime(LUNCH_START_TIME);
 		return lunch;
-	}
+	}*/
 
 
 }

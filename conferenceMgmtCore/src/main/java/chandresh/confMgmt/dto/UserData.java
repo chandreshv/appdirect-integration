@@ -14,7 +14,7 @@ public class UserData {
 	
 	public static void addNewUserByEmailID(UserDTO user){
 		user.setUserId(Math.abs(new Random().nextInt()));
-		userData.put(user.getEmail(),user);
+		userData.put(user.getCreator().getEmail(),user);
 	}
 	
 	public static void removeUserByEmailID(String emailId){

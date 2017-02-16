@@ -4,7 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.basic.DefaultOAuthConsumer;
@@ -14,15 +20,9 @@ import oauth.signpost.exception.OAuthMessageSignerException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
+import org.appDirectIntegrationCore.dto.SubscriptionEventResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -102,40 +102,30 @@ public class AppDirectHTTPClient implements IAppDirectClient {
 	 * .String, org.json.JSONObject) HTTP Post request to the input url
 	 */
 	@Override
-	public InputStream sendPOST(String url, JSONObject param)
+	public SubscriptionEventResponse sendPOST(String url, JSONObject param)
 			throws UnsupportedOperationException, ClientProtocolException,
 			IOException {
-		HttpClient client = HttpClientBuilder.create().build();
-		HttpPost post = new HttpPost(url);
-		StringEntity se = new StringEntity(param.toString());
-		se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
-				"application/json"));
-		post.setEntity(se);
-		return client.execute(post).getEntity().getContent();
+		
+		Client client = ClientBuilder.newClient();
+		
+		WebTarget webTarget = client.target(url);
+		Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(param.toString()));
+		
+		SubscriptionEventResponse sc =  response.readEntity(SubscriptionEventResponse.class);
+		return sc;
 	}
 
 	@Override
-	public InputStream sendDELETE(String url,JSONObject param) throws UnsupportedOperationException, ClientProtocolException, IOException {
+	public SubscriptionEventResponse sendDELETE(String url,JSONObject param) throws UnsupportedOperationException, ClientProtocolException, IOException {
 		
-		class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
-		    public static final String METHOD_NAME = "DELETE";
-		 
-		    public String getMethod() {
-		        return METHOD_NAME;
-		    }
-		 
-		    public HttpDeleteWithBody(final String uri) {
-		        super();
-		        setURI(URI.create(uri));
-		    }
-		}
+		String email = param.getJSONObject("creator").getString("email");
+		url+="/"+email;
 		
-		HttpDeleteWithBody httpDelete = new HttpDeleteWithBody(url);
-		StringEntity se = new StringEntity(param.toString()); 
-        se.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        httpDelete.setEntity(se);  
-        CloseableHttpClient httpclient = HttpClients.createDefault();
+		Client client = ClientBuilder.newClient();
 		
-		return httpclient.execute(httpDelete).getEntity().getContent();
+		WebTarget webTarget = client.target(url);
+		SubscriptionEventResponse response = webTarget.request(MediaType.APPLICATION_JSON).delete(SubscriptionEventResponse.class);
+		
+		return response;
 	}
 }

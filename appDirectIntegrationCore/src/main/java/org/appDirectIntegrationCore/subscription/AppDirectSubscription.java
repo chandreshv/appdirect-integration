@@ -1,7 +1,6 @@
 package org.appDirectIntegrationCore.subscription;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
@@ -14,8 +13,6 @@ import org.appDirectIntegrationCore.util.IAppDirectClient;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Component
 public class AppDirectSubscription implements IAppDirectSubscription{
 
@@ -25,10 +22,13 @@ public class AppDirectSubscription implements IAppDirectSubscription{
 	 */
 	public SubscriptionEventResponse createNewSubscription(String url) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, ClientProtocolException, IOException{
 		IAppDirectClient client = new AppDirectHTTPClient();
+		
+		//get more details of the even
 		JSONObject json = client.execute(url);
 		
-		InputStream is = client.sendPOST("http://localhost:8080/conferenceMgmtService/user", json);
-		return new ObjectMapper().readValue(is,SubscriptionEventResponse.class);
+		return client.sendPOST("http://localhost:8080/conferenceMgmtService/user", json);
+		
+		
 	}
 
 	/* 
@@ -41,9 +41,11 @@ public class AppDirectSubscription implements IAppDirectSubscription{
 			ClientProtocolException, IOException {
 
 		IAppDirectClient client = new AppDirectHTTPClient();
+		
+		//get more details of the even
 		JSONObject json = client.execute(url);
 		
-		InputStream is = client.sendDELETE("http://localhost:8080/conferenceMgmtService/user", json);
-		return new ObjectMapper().readValue(is,SubscriptionEventResponse.class);
+		return client.sendDELETE("http://localhost:8080/conferenceMgmtService/user", json);
+		
 	}
 }
